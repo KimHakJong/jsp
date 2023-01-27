@@ -7,6 +7,7 @@
 </head>
 <body>
   <h1>m.jsp입니다.</h1>
+  <h2>local-1</h2>
 </body>
 </html>
 
