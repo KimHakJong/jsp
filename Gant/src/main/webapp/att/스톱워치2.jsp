@@ -1,92 +1,77 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <title>Insert title here</title>
 <script>
-	let time = 0; 
-	let starFlag = true; // startŬ���� false
-	$(document).ready(function(){
-	  buttonEvt();
-	});
+$(document).ready(function(){
+	let time = 0;
+	let watch1 = $("#1");
+	let watch2 = $("#2");
+	let watch3 = $("#3");
+	   
+	        // time은 스톱워치의 경우 0으로 두고 time++;
+	        // time은 타이머의 경우 남은 시간을 초 단위로 두고 time--;
+	        // 차이를 눈으로 보기 위해 (i*100)을 추가했고, 실제로는 표현하려는 시작 시간을 넣으셔야 됩니다.
+	        //let time = 0 + (i*100); 
+	        startTimer(time, $("#1")); // 각 타이머 생성
 	
-	function init(){
-		$("#time").text("00:00:00");
-	}
+	/* function setInterval(){
+	    // HTML의 name을 기준으로 array 생성
+	    let arr = document.getElementsByName("stopWatch");
+	   
+	    for(let i=0; i<arr.length; i++){
+	        // time은 스톱워치의 경우 0으로 두고 time++;
+	        // time은 타이머의 경우 남은 시간을 초 단위로 두고 time--;
+	        // 차이를 눈으로 보기 위해 (i*100)을 추가했고, 실제로는 표현하려는 시작 시간을 넣으셔야 됩니다.
+	        //let time = 0 + (i*100); 
+	        let time = 0;
+ 	        startTimer(time, arr[i]); // 각 타이머 생성
+	    }
+	} */
 	
-	function buttonEvt(){
-		let hour = 0; //��
-		let min = 0;  //��
-		let sec = 0;  //��
-		let timer; // setInterval()
 	
-	  // start btn
-	  $("#startbtn").click(function(){
-	
-	    if(starFlag){
-	      starFlag = false;
-	      if(time == 0){ //time�� 0�̸� �ð� �ʱ�ȭ
-	        init(); 
-	      }
-	
-	      timer = setInterval(function(){
-	        time++;
+	function startTimer(time, obj){
+	    var hour, min, sec;
+
+	    var timer = setInterval(function(){
+	        time++; // 1초마다 증가, 타이머의 경우 time--;
+
+	        min = Math.floor(time/60);
+	        hour = Math.floor(min/60);
+	        sec = time%60;
+	        min = min%60;
+
+	        var th = hour;
+	        var tm = min;
+	        var ts = sec;
 	        
-	      //Math.floor()�׻� �����ϰ� �־��� ���ں��� �۰ų� ���� ���� ū ������ ��ȯ�մϴ�.
-	                                   //time = 1(1��)  60(1��)   3600(1�ð�)
-	        min = Math.floor(time/60); //       0         1       60
-	        hour = Math.floor(min/60);//        0         0        1
-	        sec = time%60;            //        1         0        0
-	        min = min%60;             //        0         1        0
-	
-	        
-	        // �� �� �� �� 1�� �ڸ��϶� �ι�°�ڸ��� 0 �� �ٴ´�. 01 : 02 : 13
-	        let th = hour;
-	        let tm = min;
-	        let ts = sec;
-	        if(th<10){
-	        th = "0" + hour;
+	        // 한자리일 경우 처리
+	        if(th < 10){
+	            th = "0" + hour;
 	        }
 	        if(tm < 10){
-	        tm = "0" + min;
+	            tm = "0" + min;
 	        }
 	        if(ts < 10){
-	        ts = "0" + sec;
+	            ts = "0" + sec;
 	        }
-	       
-	        $("#time").text(th + ":" + tm + ":" + ts);
-	        
-	      }, 1000);
+
+	        // 함수 호출 당시 받은 object의 html 교체
+	        obj.innerHTML = th + ":" + tm + ":" + ts;
 	    }
-	  });
-	
-	  // ���⶧
-	  $("#pausebtn").click(function(){
-	    if(time != 0){
-	      clearInterval(timer);
-	      starFlag = true;
-	    }
-	  });
-	
-	  // �����Ҷ�
-	  $("#stopbtn").click(function(){
-	    if(time != 0){
-	      clearInterval(timer);
-	      starFlag = true;
-	      time = 0;
-	      init();
-	    }
-	  });
+	, 1000);
 	}
+
+});
 
 </script>
 </head>
 <body>
-	<div id="time" class="time">00:00:00</div>
-	<button type="button" id="startbtn" class="fa fa-play" aria-hidden="true"></button> 
-	<button type="button" id="pausebtn" class="fa fa-pause" aria-hidden="true"></button>
-	<button type="button" id="stopbtn" class="fa fa-stop" aria-hidden="true"></button>
+	<div> 남은시간 : <p id="1" > 00:00:00 </p></div>
+	<div> 남은시간 : <p id="2"> 00:00:00 </p></div>
+	<div> 남은시간 : <p id="3" > 00:00:00 </p></div>
+	<button type="button" id="start">시작</button>
 </body>
 </html>
